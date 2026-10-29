@@ -104,7 +104,16 @@ a.btn[aria-disabled="true"] { opacity: .45; }
 .empty { color: var(--muted); text-align: center; padding: 24px 8px; }
 .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 999px; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 40; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-a { color: var(--accent); font-weight: 700; }
+a:not(.btn) { color: var(--accent); font-weight: 700; }
+#intro { display: none; }
+.ver-intro #intro { display: flex; flex-direction: column; gap: 16px; padding: 18px 0 40px; align-items: center; }
+.ver-intro #app { display: none; }
+#intro .capa { display: block; width: 100%; max-width: 440px; height: auto; border-radius: 12px; border: 1px solid var(--line); }
+#intro .box { width: 100%; max-width: 560px; }
+#intro ol.steps { margin: 0; }
+#intro label.skip { display: flex; gap: 10px; align-items: center; font-size: 0.92rem; color: var(--muted); min-height: 44px; }
+#intro label.skip input { width: 22px; height: 22px; }
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); margin-top: 20px; padding-top: 14px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
 </style>
@@ -112,6 +121,27 @@ footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--li
 </head>
 <body>
 <div class="wrap">
+<script>try { if (localStorage.getItem("intro-visto") !== "1") { document.documentElement.classList.add("ver-intro"); } } catch (e) { document.documentElement.classList.add("ver-intro"); }</script>
+<section id="intro" aria-label="Apresentação">
+  <img class="capa" src="imagens/capa-cartaz-web.jpg" width="720" height="1080" alt="Capa do manual: cartaz com o título Manual de combate à desinformação bolsonarista">
+  <div class="box">
+    <h2 style="margin-top:0">Como usar</h2>
+    <ol class="steps">
+      <li><div><b>Busque</b><span>Digite uma palavra: urna, vacina, imposto, igreja...</span></div></li>
+      <li><div><b>Copie</b><span>Leia a resposta curta e toque em “Copiar” ou “Copiar com fonte”.</span></div></li>
+      <li><div><b>Reescreva e responda uma vez</b><span>Use as suas palavras e pense em quem está lendo. Texto idêntico em vários lugares parece campanha.</span></div></li>
+      <li><div><b>Ofensa ou perfil anônimo?</b><span>Não responda. Veja a aba “Alertas”: documente e denuncie.</span></div></li>
+    </ol>
+    <p class="small">Só afirmamos o que podemos provar. Confira sempre a fonte antes de citar. Dica: use “Adicionar à tela inicial” no menu do navegador para abrir como aplicativo.</p>
+    <label class="skip"><input type="checkbox" id="intro-skip"> Não mostrar esta tela de novo neste aparelho</label>
+    <div class="btns">
+      <button class="btn" id="intro-go" type="button">Entrar no Modo debate</button>
+      <a class="btn ghost" href="livreto/">Ver o livreto</a>
+    </div>
+  </div>
+</section>
+<div id="app">
+
   <header class="top">
     <div class="brand"><h1>Modo debate</h1><span>Manual de combate à desinformação</span></div>
     <div class="tabs" role="tablist" aria-label="Seções">
@@ -240,6 +270,7 @@ footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--li
   </section>
 
   <footer>Só afirmamos o que podemos provar. Cada resposta indica onde conferir. Se errarmos, corrigimos. Confira sempre a fonte antes de citar.<br><br>Contamos acessos de forma anônima, sem cookies e sem dados pessoais, para saber quais respostas ajudam mais.</footer>
+</div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -384,6 +415,18 @@ var DATA = {"cards": [{"tema": "Dinheiro", "frase": "Bolsa Família faz o povo n
 })();
 </script>
 
+<script>
+(function () {
+  var go = document.getElementById("intro-go");
+  if (!go) { return; }
+  go.addEventListener("click", function () {
+    try { if (document.getElementById("intro-skip").checked) { localStorage.setItem("intro-visto", "1"); } } catch (e) {}
+    document.documentElement.classList.remove("ver-intro");
+    window.scrollTo(0, 0);
+    try { if (window.goatcounter && window.goatcounter.count) { window.goatcounter.count({ path: "intro/entrar", title: "Entrou no Modo debate", event: true }); } } catch (e) {}
+  });
+})();
+</script>
 <script data-goatcounter="https://godoy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
