@@ -4,6 +4,15 @@ Respostas curtas, com fonte, para as mentiras políticas que mais circulam nas r
 
 **Página online (Modo debate):** https://godoysteel.github.io/manual-combate-desinformacao/
 
+## Instalar como aplicativo
+
+O Modo debate pode ser instalado no celular, sem loja de aplicativos:
+
+- **Android (Chrome):** toque em **Instalar o app** na página, ou no menu (três pontinhos) em **Instalar aplicativo**.
+- **iPhone (Safari):** toque em compartilhar e em **Adicionar à Tela de Início**.
+
+Depois de aberto uma vez, ele funciona também sem internet.
+
 ## O que tem aqui
 
 - **Modo debate** (`index.html`): página para usar no celular durante uma discussão. Busque por palavra (urna, vacina, imposto...), leia a resposta curta e copie com um toque.

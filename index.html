@@ -2,6 +2,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#C8102E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Debate">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="imagens/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="imagens/icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Modo debate: respostas curtas, com fonte, para mentiras políticas que circulam nas redes.">
 <style>html{color-scheme:light}body{margin:0}</style>
@@ -114,6 +122,8 @@ a:not(.btn) { color: var(--accent); font-weight: 700; }
 #intro label.skip { display: flex; gap: 10px; align-items: center; font-size: 0.92rem; color: var(--muted); min-height: 44px; }
 #intro label.skip input { width: 22px; height: 22px; }
 a.btn { display: inline-flex; align-items: center; text-decoration: none; }
+.inst { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; }
+.inst[hidden] { display: none; }
 footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); margin-top: 20px; padding-top: 14px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
 </style>
@@ -121,7 +131,7 @@ footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--li
 </head>
 <body>
 <div class="wrap">
-<script>try { if (localStorage.getItem("intro-visto") !== "1") { document.documentElement.classList.add("ver-intro"); } } catch (e) { document.documentElement.classList.add("ver-intro"); }</script>
+<script>try { var inst = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true; if (localStorage.getItem("intro-visto") !== "1" && !inst) { document.documentElement.classList.add("ver-intro"); } } catch (e) { document.documentElement.classList.add("ver-intro"); }</script>
 <section id="intro" aria-label="Apresentação">
   <img class="capa" src="imagens/capa-cartaz-web.jpg" width="720" height="1080" alt="Capa do manual: cartaz com o título Manual de combate à desinformação bolsonarista">
   <div class="box">
@@ -134,6 +144,12 @@ footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--li
     </ol>
     <p class="small"><b>Respeitamos o pensamento de direita.</b> Conservadorismo e liberalismo são posições legítimas. O que combatemos é a desinformação e a manipulação em massa, e os boatos que o movimento bolsonarista espalha, com fato, fonte e argumento, não com insulto.</p>
     <p class="small">Só afirmamos o que podemos provar. Confira sempre a fonte antes de citar. Dica: use “Adicionar à tela inicial” no menu do navegador para abrir como aplicativo.</p>
+    <div class="inst" data-inst hidden>
+      <p><b>Instalar como aplicativo</b></p>
+      <p class="small">Fica na tela inicial, abre em tela cheia e funciona sem internet depois da primeira abertura.</p>
+      <button class="btn js-install" type="button" hidden>Instalar o app</button>
+      <p class="small js-inst-hint"></p>
+    </div>
     <label class="skip"><input type="checkbox" id="intro-skip"> Não mostrar esta tela de novo neste aparelho</label>
     <div class="btns">
       <button class="btn" id="intro-go" type="button">Entrar no Modo debate</button>
@@ -267,6 +283,12 @@ footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--li
       <p><a href="pdf/manual-combate-desinformacao-bolsonarista.pdf">PDF para WhatsApp (A5)</a></p>
       <p><a href="pdf/manual-combate-desinformacao-bolsonarista-A4-1-pagina-por-folha.pdf">PDF em A4, uma página por folha</a></p>
       <p><a href="pdf/manual-combate-desinformacao-bolsonarista-impressao-A4-livreto.pdf">PDF para imprimir como livreto (A4, frente e verso)</a></p>
+      <div class="inst" data-inst hidden>
+      <p><b>Instalar como aplicativo</b></p>
+      <p class="small">Fica na tela inicial, abre em tela cheia e funciona sem internet depois da primeira abertura.</p>
+      <button class="btn js-install" type="button" hidden>Instalar o app</button>
+      <p class="small js-inst-hint"></p>
+    </div>
     </div>
   </section>
 
@@ -452,5 +474,39 @@ var DATA = {"cards": [{"tema": "Dinheiro", "frase": "Bolsa Família faz o povo n
 })();
 </script>
 <script data-goatcounter="https://godoy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+(function () {
+  var standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+  function gc(path, title) { try { if (window.goatcounter && window.goatcounter.count) { window.goatcounter.count({ path: path, title: title || path, event: true }); } } catch (e) {} }
+  var prompt = null;
+  var blocos = document.querySelectorAll("[data-inst]");
+  var botoes = document.querySelectorAll(".js-install");
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  function dica() {
+    return ios ? "No iPhone: toque no botão de compartilhar do Safari e escolha “Adicionar à Tela de Início”."
+               : "No menu do navegador (os três pontinhos), escolha “Instalar aplicativo” ou “Adicionar à tela inicial”.";
+  }
+  if (!standalone) {
+    Array.prototype.forEach.call(blocos, function (b) { b.hidden = false; });
+    Array.prototype.forEach.call(document.querySelectorAll(".js-inst-hint"), function (p) { p.textContent = dica(); });
+  } else { gc("app/aberto", "Abriu o app instalado"); }
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); prompt = e;
+    Array.prototype.forEach.call(botoes, function (b) { b.hidden = false; });
+    Array.prototype.forEach.call(document.querySelectorAll(".js-inst-hint"), function (p) { p.hidden = true; });
+  });
+  Array.prototype.forEach.call(botoes, function (b) {
+    b.addEventListener("click", function () {
+      if (!prompt) { return; }
+      prompt.prompt();
+      prompt.userChoice.then(function (c) { gc("app/instalar-" + (c && c.outcome ? c.outcome : "x")); prompt = null; Array.prototype.forEach.call(botoes, function (x) { x.hidden = true; }); });
+    });
+  });
+  window.addEventListener("appinstalled", function () { gc("app/instalado"); Array.prototype.forEach.call(blocos, function (b) { b.hidden = true; }); });
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+})();
+</script>
 </body>
 </html>
