@@ -31,6 +31,10 @@ Respostas curtas, com fonte, para as mentiras políticas que mais circulam nas r
 - As páginas sobre denúncia e sobre emprego orientam, mas **não substituem um advogado**.
 - Este projeto não é vinculado a partido, candidato ou campanha.
 
+## Enviar uma mentira
+
+Viu uma mentira que não está no manual? Mande o texto da afirmação para quem te passou o link (grupo ou privado), **sem o nome, a foto ou o perfil de quem escreveu**. Ela só vira um caso depois de conferida, com fonte.
+
 ## Correções
 
 Encontrou um erro, uma fonte quebrada ou um fato desatualizado? Abra uma *issue* neste repositório com o link da fonte correta.
