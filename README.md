@@ -25,6 +25,10 @@ Respostas curtas, com fonte, para as mentiras políticas que mais circulam nas r
 - **O alvo é a mentira, não a pessoa.** Quem repassa costuma estar de boa-fé.
 - **Fato ou opinião:** em temas de valores, o manual não chama a posição contrária de mentira. Pede o dado e mantém a conversa.
 
+## Estatísticas
+
+A página usa o [GoatCounter](https://www.goatcounter.com/), que conta acessos de forma anônima, sem cookies e sem dados pessoais. Registra apenas quais respostas foram copiadas ou abertas, as abas visitadas e os downloads.
+
 ## Avisos
 
 - Confira sempre a fonte original antes de citar. Os fatos e os canais de denúncia podem mudar com o tempo.
