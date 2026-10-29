@@ -29,6 +29,10 @@ Respostas curtas, com fonte, para as mentiras políticas que mais circulam nas r
 
 A página usa o [GoatCounter](https://www.goatcounter.com/), que conta acessos de forma anônima, sem cookies e sem dados pessoais. Registra apenas quais respostas foram copiadas ou abertas, as abas visitadas e os downloads.
 
+## Comentários
+
+Os comentários usam o [Giscus](https://giscus.app/), que guarda tudo nas Discussões deste repositório. Para comentar é preciso uma conta do GitHub. O Giscus só é carregado quando a pessoa toca em "Ver e escrever comentários". Ofensas, ataques, ameaças e dados pessoais de terceiros são apagados.
+
 ## Avisos
 
 - Confira sempre a fonte original antes de citar. Os fatos e os canais de denúncia podem mudar com o tempo.
