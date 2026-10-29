@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel · Modo debate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #F4F1ED; --surface: #FFFFFF; --fg: #161414; --muted: #5A5350; --line: #DDD6CF;
+  --accent: #C8102E; --accent-fg: #FFFFFF; --mark: #F2C230; --bar: #C8102E;
+  --display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141111; --surface: #1E1A1A; --fg: #F2ECE8; --muted: #B7ADA8; --line: #36302F;
+    --accent: #FF5A68; --accent-fg: #1A0507; --bar: #FF5A68;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 860px; margin: 0 auto; padding: 20px 0 60px; display: flex; flex-direction: column; gap: 16px; }
+h1 { font-family: var(--display); font-weight: 400; font-size: 1.8rem; text-transform: uppercase; margin: 0; line-height: 1; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 1.15rem; text-transform: uppercase; margin: 0 0 8px; }
+p { margin: 0; }
+.small { color: var(--muted); font-size: 0.88rem; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.field { width: 100%; font: inherit; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); color: var(--fg); min-height: 48px; }
+.btn { font: inherit; font-weight: 700; min-height: 48px; padding: 0 16px; border-radius: 10px; border: 2px solid var(--accent); background: var(--accent); color: var(--accent-fg); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+.kpi b { display: block; font-family: var(--display); font-weight: 400; font-size: 2rem; line-height: 1.1; }
+.kpi span { color: var(--muted); font-size: 0.85rem; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.item { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: baseline; font-size: 0.95rem; }
+.item .n { min-width: 0; overflow-wrap: anywhere; }
+.item .c { font-variant-numeric: tabular-nums; font-weight: 700; }
+.bar { grid-column: 1 / -1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--bar); }
+.err { color: var(--accent); font-weight: 600; }
+.ok { color: var(--muted); }
+ol.help { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 0.93rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Painel · Modo debate</h1><p class="small">Estatísticas anônimas do GoatCounter. Só você vê, com o seu token.</p></header>
+
+  <section class="box" id="login">
+    <h2>Entrar</h2>
+    <label for="tok" class="small">Token de leitura do GoatCounter</label>
+    <input class="field" id="tok" type="password" autocomplete="off" placeholder="Cole o token aqui">
+    <label class="small"><input type="checkbox" id="lembrar"> Lembrar neste aparelho</label>
+    <div class="row"><button class="btn" id="entrar" type="button">Entrar</button></div>
+    <p class="err" id="erro" role="alert" hidden></p>
+    <details>
+      <summary class="small">Como criar o token</summary>
+      <ol class="help">
+        <li>Abra <b>godoy.goatcounter.com</b> e entre na sua conta.</li>
+        <li>Vá em <b>Settings</b> e depois em <b>API</b>.</li>
+        <li>Clique em <b>Create new token</b> e marque <b>somente</b> “Read statistics”.</li>
+        <li>Copie o token e cole aqui. Não compartilhe e não envie a ninguém.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="painel" hidden>
+    <div class="row" style="justify-content: space-between;">
+      <div class="row" role="group" aria-label="Período">
+        <button class="btn ghost" data-dias="1" type="button" aria-pressed="false">Hoje</button>
+        <button class="btn ghost" data-dias="7" type="button" aria-pressed="true">7 dias</button>
+        <button class="btn ghost" data-dias="30" type="button" aria-pressed="false">30 dias</button>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="atualizar" type="button">Atualizar</button>
+        <button class="btn ghost" id="sair" type="button">Sair</button>
+      </div>
+    </div>
+    <p class="small" id="status" aria-live="polite" style="margin-top:8px;"></p>
+
+    <div class="kpis" id="kpis" style="margin-top:10px;"></div>
+
+    <div class="grid2" style="margin-top:12px;">
+      <div class="box"><h2>Respostas mais copiadas</h2><div class="list" id="l-copias"></div></div>
+      <div class="box"><h2>Mais abertas (Ver mais)</h2><div class="list" id="l-abertas"></div></div>
+      <div class="box"><h2>Abas</h2><div class="list" id="l-abas"></div></div>
+      <div class="box"><h2>Downloads e livreto</h2><div class="list" id="l-down"></div></div>
+      <div class="box"><h2>Outras cópias</h2><div class="list" id="l-outras"></div></div>
+      <div class="box"><h2>De onde vêm os acessos</h2><div class="list" id="l-refs"></div></div>
+      <div class="box"><h2>Navegadores</h2><div class="list" id="l-browsers"></div></div>
+      <div class="box"><h2>Sistemas</h2><div class="list" id="l-systems"></div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+var FRASES = ["Bolsa Família faz o povo não querer trabalhar.", "Quem é pobre é porque não se esforça.", "Imposto é roubo. / A esquerda só sabe aumentar imposto.", "A inflação é culpa do presidente.", "A esquerda vai fechar as igrejas.", "A esquerda quer destruir a família.", "Estão ensinando criança a ser gay nas escolas.", "A escola só ensina ideologia.", "Direitos humanos só servem para proteger bandido.", "Bandido bom é bandido morto.", "Todo político é ladrão.", "Ele foi investigado, então é culpado.", "A urna eletrônica pode ser fraudada.", "A pesquisa errou, então foi comprada.", "Querem ditadura. / Voltamos à época da ditadura. / Vão virar Venezuela.", "Não teve ditadura. Ninguém foi torturado.", "A vacina causa autismo. / Alguém morreu depois da vacina.", "Um médico famoso falou, então funciona.", "Fez frio hoje, então não existe aquecimento global.", "Cotas são privilégio. É racismo ao contrário.", "A imprensa só mente. / Agência de checagem é de esquerda.", "Benefício social é compra de voto.", "O sistema persegue quem é de oposição. / Se ele tivesse ganhado, estariam beijando os pés dele.", "O governo só cumpre a meta fiscal aumentando imposto.", "O governo é brando com o crime.", "O governo apoia ditaduras.", "O governo apoia invasão de terra.", "As penas do 8 de janeiro foram desproporcionais."];
+(function () {
+  var BASE = "https://godoy.goatcounter.com/api/v0";
+  var $ = function (id) { return document.getElementById(id); };
+  var token = "", dias = 7;
+
+  function slug(s) { return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60); }
+  var NOMES = {};
+  FRASES.forEach(function (f) { NOMES[slug(f)] = f; });
+  function nomeDe(s) { return NOMES[s] || s.replace(/-/g, " "); }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  function ymd(d) { var m = d.getMonth() + 1, dd = d.getDate(); return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (dd < 10 ? "0" : "") + dd; }
+
+  async function api(path, params, tentativa) {
+    var u = new URL(BASE + path);
+    Object.keys(params || {}).forEach(function (k) { u.searchParams.set(k, params[k]); });
+    var r = await fetch(u.toString(), { headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" } });
+    if (r.status === 429 && !tentativa) { await sleep(1500); return api(path, params, 1); }
+    if (!r.ok) {
+      var t = ""; try { t = await r.text(); } catch (e) {}
+      var err = new Error(r.status + (r.status === 401 || r.status === 403 ? " (token inválido ou sem permissão de leitura)" : "") + " " + t.replace(/<[^>]+>/g, " ").trim().slice(0, 120));
+      err.status = r.status; throw err;
+    }
+    return r.json();
+  }
+
+  function lista(id, itens, vazio) {
+    var box = $(id); box.innerHTML = "";
+    if (!itens.length) { var p = document.createElement("p"); p.className = "small"; p.textContent = vazio || "Sem dados no período."; box.appendChild(p); return; }
+    var max = Math.max.apply(null, itens.map(function (i) { return i[1]; })) || 1;
+    itens.forEach(function (i) {
+      var row = document.createElement("div"); row.className = "item";
+      var n = document.createElement("span"); n.className = "n"; n.textContent = i[0];
+      var c = document.createElement("span"); c.className = "c"; c.textContent = i[1];
+      var bar = document.createElement("div"); bar.className = "bar"; var fill = document.createElement("i"); fill.style.width = Math.max(3, Math.round(i[1] / max * 100)) + "%"; bar.appendChild(fill);
+      row.appendChild(n); row.appendChild(c); row.appendChild(bar); box.appendChild(row);
+    });
+  }
+  function top(map, n) { return Object.keys(map).map(function (k) { return [k, map[k]]; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, n); }
+  function kpi(titulo, valor) {
+    var d = document.createElement("div"); d.className = "kpi"; var b = document.createElement("b"); b.textContent = valor; var s = document.createElement("span"); s.textContent = titulo; d.appendChild(b); d.appendChild(s); return d;
+  }
+
+  async function carregar() {
+    var status = $("status"); status.className = "small"; status.textContent = "Carregando…";
+    var fim = new Date(), ini = new Date(); ini.setDate(ini.getDate() - (dias - 1));
+    var per = { start: ymd(ini), end: ymd(fim) };
+    try {
+      var tot = await api("/stats/total", { start: per.start, end: per.end, daily: "true" });
+      await sleep(300);
+      // hits (com paginação por exclude_paths)
+      var hits = [], excl = [], mais = true, guard = 0;
+      while (mais && guard < 6) {
+        var q = { start: per.start, end: per.end, limit: "100", daily: "true" };
+        if (excl.length) { q.exclude_paths = excl.join(","); }
+        var h = await api("/stats/hits", q);
+        (h.hits || []).forEach(function (x) { hits.push(x); excl.push(x.path_id); });
+        mais = !!h.more && (h.hits || []).length > 0; guard++; await sleep(300);
+      }
+      var copias = {}, abertas = {}, abas = {}, down = {}, outras = {}, paginas = 0, eventos = 0, totCop = 0, totAb = 0;
+      hits.forEach(function (x) {
+        var p = (x.path || "").replace(/^\/+/, ""), n = x.count || 0;
+        if (!x.event) { paginas += n; return; }
+        eventos += n;
+        var m;
+        if ((m = p.match(/^copiar-(?:resposta|com-fonte)\/(.+)$/))) { copias[nomeDe(m[1])] = (copias[nomeDe(m[1])] || 0) + n; totCop += n; }
+        else if ((m = p.match(/^ver-mais\/(.+)$/))) { abertas[nomeDe(m[1])] = (abertas[nomeDe(m[1])] || 0) + n; totAb += n; }
+        else if ((m = p.match(/^aba\/(.+)$/))) { var nm = { met: "Método", ale: "Alertas", resp: "Responder" }[m[1]] || m[1]; abas[nm] = (abas[nm] || 0) + n; }
+        else if ((m = p.match(/^download\/(.+)$/))) { down["PDF: " + m[1].replace(/-/g, " ")] = (down["PDF: " + m[1].replace(/-/g, " ")] || 0) + n; }
+        else if (p.indexOf("livreto/") === 0) { down["Livreto aberto"] = (down["Livreto aberto"] || 0) + n; }
+        else if ((m = p.match(/^copiar\/(.+)$/))) { outras[m[1].replace(/-/g, " ")] = (outras[m[1].replace(/-/g, " ")] || 0) + n; }
+      });
+      var k = $("kpis"); k.innerHTML = "";
+      k.appendChild(kpi("Visitas à página", tot.total != null ? tot.total : paginas));
+      k.appendChild(kpi("Cópias de respostas", totCop));
+      k.appendChild(kpi("“Ver mais” abertos", totAb));
+      k.appendChild(kpi("Eventos no total", tot.total_events != null ? tot.total_events : eventos));
+      lista("l-copias", top(copias, 15)); lista("l-abertas", top(abertas, 15));
+      lista("l-abas", top(abas, 5)); lista("l-down", top(down, 8)); lista("l-outras", top(outras, 10));
+
+      async function pag(nome, id) {
+        try {
+          var r = await api("/stats/" + nome, { start: per.start, end: per.end, limit: "8" });
+          lista(id, (r.stats || []).map(function (s) { return [s.name || s.id || "(desconhecido)", s.count || 0]; }));
+        } catch (e) { lista(id, [], "Não foi possível carregar (" + (e.status || "erro") + ")."); }
+        await sleep(300);
+      }
+      await pag("toprefs", "l-refs"); await pag("browsers", "l-browsers"); await pag("systems", "l-systems");
+      status.className = "ok small";
+      status.textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR") + " · período: " + per.start + " a " + per.end;
+    } catch (e) {
+      status.className = "err small"; status.textContent = "Erro: " + e.message;
+      if (e.status === 401 || e.status === 403) { sair(true); $("erro").hidden = false; $("erro").textContent = "Token recusado. Confira se ele tem a permissão “Read statistics”."; }
+    }
+  }
+
+  function entrar(t) {
+    token = t.trim(); if (!token) { $("erro").hidden = false; $("erro").textContent = "Cole o token primeiro."; return; }
+    $("erro").hidden = true;
+    if ($("lembrar").checked) { try { localStorage.setItem("gc-token", token); } catch (e) {} }
+    $("login").hidden = true; $("painel").hidden = false; carregar();
+  }
+  function sair(manter) {
+    token = ""; try { localStorage.removeItem("gc-token"); } catch (e) {}
+    $("painel").hidden = true; $("login").hidden = false; if (!manter) { $("tok").value = ""; $("erro").hidden = true; }
+  }
+  $("entrar").addEventListener("click", function () { entrar($("tok").value); });
+  $("tok").addEventListener("keydown", function (e) { if (e.key === "Enter") { entrar($("tok").value); } });
+  $("sair").addEventListener("click", function () { sair(false); });
+  $("atualizar").addEventListener("click", carregar);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-dias]"), function (b) {
+    b.addEventListener("click", function () {
+      dias = parseInt(b.getAttribute("data-dias"), 10);
+      Array.prototype.forEach.call(document.querySelectorAll("[data-dias]"), function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+      carregar();
+    });
+  });
+  try { var salvo = localStorage.getItem("gc-token"); if (salvo) { $("tok").value = salvo; $("lembrar").checked = true; entrar(salvo); } } catch (e) {}
+})();
+</script>
+</body>
+</html>
