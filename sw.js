@@ -1,5 +1,5 @@
-// Service worker do Modo debate. Versão: 20261029144037
-var CACHE = "modo-debate-20261029144037";
+// Service worker do Modo debate. Versão: 20261030205003
+var CACHE = "modo-debate-20261030205003";
 var PRE = ["./", "index.html", "manifest.webmanifest", "imagens/capa-cartaz-web.jpg", "imagens/icon-192.png", "imagens/icon-512.png"];
 
 self.addEventListener("install", function (e) {
